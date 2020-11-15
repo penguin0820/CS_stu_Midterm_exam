@@ -15,9 +15,6 @@
                 <MenuItem Header="儲存檔案" Height="16" Click="Save_Click"/>
                 <MenuItem Header="另存為...." Height="16" Click="Other_Save_Click"/>
                 <Separator Height="1" Margin="0,0,0,0"/>
-                <MenuItem Header="版面設定" Height="16"/>
-                <MenuItem Header="列印" Height="16"/>
-                <Separator Height="1" Margin="0,0,0,0"/>
                 <MenuItem Header="結束" Height="16" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="編輯" MouseEnter="Edit_Item_Refresh">
@@ -28,19 +25,12 @@
                 <MenuItem x:Name="Paste_item" Header="貼上" Height="16" Click="Paste_Click"/>
                 <MenuItem x:Name="Remove_item" Header="刪除" Height="16" Click="Remove_Click"/>
                 <Separator Height="1" Margin="0,0,0,0"/>
-                <MenuItem Header="使用Google搜尋...." Height="16"/>
-                <MenuItem Header="尋找...." Height="16"/>
-                <MenuItem Header="找下一個" Height="16"/>
-                <MenuItem Header="尋找上一個" Height="16"/>
-                <MenuItem Header="取代" Height="16"/>
-                <MenuItem Header="移至" Height="16"/>
-                <Separator Height="1" Margin="0,0,0,0"/>
                 <MenuItem Header="全選" Height="16" Click="Select_all_Click"/>
                 <MenuItem Header="時間/日期" Height="16" Click="add_time"/>
             </MenuItem>
             <MenuItem Header="格式">
                 <MenuItem x:Name="Auto_return_item" Header="自動換行" Height="16" IsChecked="True" Click="Auto_return_item_Click" />
-                <MenuItem Header="字型..." Height="16"/>
+                <MenuItem Header="字形格式" Height="16"/>
             </MenuItem>
             <MenuItem Header="檢視">
                 <MenuItem Header="縮放" Height="16">
