@@ -48,7 +48,7 @@
                 <MenuItem Header="關於記事本" Height="16"/>
             </MenuItem>
         </Menu>
-        <TextBox x:Name="Text_in" Background="#FFB9B9B9" Height="375" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" FontSize="18" KeyDown="Text_in_KeyDown" />
+        <RichTextBox x:Name="Text_in" Background="#FFB9B9B9" Height="375" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" FontSize="18" KeyDown="Text_in_KeyDown"/>
 
         <StatusBar Margin="0,0,0,0" Height="31" Background="#FFCB6E6E"/>
     </StackPanel>

@@ -5,9 +5,11 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Application = System.Windows.Forms.Application;
+using DataFormats = System.Windows.Forms.DataFormats;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
@@ -57,13 +59,21 @@ namespace CS_stu_Midterm_exam
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.DefaultExt = "*.txt";
-            saveFileDialog.Filter = "Text file|*.txt|All file|*.*";
+            saveFileDialog.Filter = "Text file|*.txt|rtf file|*.rtf|All file|*.*";
             if (saveFileDialog.ShowDialog() == true)
             {
                 string path = saveFileDialog.FileName;
-                using (StreamWriter sw = File.CreateText(path))
+                MemoryStream ms = new MemoryStream();
+                TextRange range = new TextRange(Text_in.Document.ContentStart, Text_in.Document.ContentEnd);
+                range.Save(ms, DataFormats.Rtf);
+                string content = Encoding.Default.GetString(ms.GetBuffer());
+                content = content.Replace(@"fcharset0", @"fcharset134");
+                using (FileStream fs = new FileStream(path, FileMode.Create))
                 {
-                    sw.WriteLine(Text_in.Text);
+                    using (StreamWriter wr = new StreamWriter(fs,en))
+                    {
+                        wr.Write(content);
+                    }
                 }
                 Save_path = path;
                 is_Save = true;
@@ -92,7 +102,7 @@ namespace CS_stu_Midterm_exam
                     case MessageBoxResult.No:
                         is_Save = false;
                         Save_path = "";
-                        Text_in.Text = "";
+                        //Text_in.Text = "";
                         window.Title = "未命名 - 記事本";
                         need_seve = false;
                         break;
@@ -115,7 +125,7 @@ namespace CS_stu_Midterm_exam
         //編輯menu刷新
         private void Edit_Item_Refresh(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (Text_in.SelectionLength > 0)
+            if (Text_in.IsSelectionActive)
             {
                 Cut_item.IsEnabled = true;
                 Remove_item.IsEnabled = true;
@@ -157,19 +167,18 @@ namespace CS_stu_Midterm_exam
         //檔案->開啟舊檔 功能
         private void Loading_Click(object sender, RoutedEventArgs e)
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             OpenFileDialog openfile = new OpenFileDialog();
-            openfile.DefaultExt = ".txt";
-            openfile.Filter = "文字文件|*.txt|全部文件|*.*";
+            openfile.DefaultExt = "*.txt";
+            openfile.Filter = "Text file|*.txt|rtf file|*.rtf|All file|*.*";
             if (openfile.ShowDialog() == true)
             {
                 string path = openfile.FileName;
-                var reader = new StreamReader(path, Encoding.GetEncoding("big5"));//var不明確的宣告
 
-                Text_in.Text = File.ReadAllText(path);
+                FileStream fs = new FileStream(path, FileMode.Open);
+                TextRange range = new TextRange(Text_in.Document.ContentStart, Text_in.Document.ContentEnd);
+                range.Load(fs, DataFormats.Rtf);
 
                 Save_path = path;
-                is_Save = true;
                 window.Title = openfile.SafeFileName + " - 記事本";
             }
 
@@ -185,7 +194,10 @@ namespace CS_stu_Midterm_exam
             {
                 using (StreamWriter sw = File.CreateText(Save_path))
                 {
-                    sw.WriteLine(Text_in.Text);
+                    string path = Save_path;
+                    FileStream fs = new FileStream(path, FileMode.Create);
+                    TextRange range = new TextRange(Text_in.Document.ContentStart, Text_in.Document.ContentEnd);
+                    range.Save(fs, DataFormats.Rtf);
                 }
             }
         }
@@ -226,7 +238,7 @@ namespace CS_stu_Midterm_exam
         //編輯->剪下 功能
         private void cut_Click(object sender, RoutedEventArgs e)
         {
-            if (Text_in.SelectedText != "")
+            if (Text_in.IsSelectionActive)
             {
                 Text_in.Cut();
             }
@@ -234,7 +246,7 @@ namespace CS_stu_Midterm_exam
         //編輯->複製 功能
         private void copy_Click(object sender, RoutedEventArgs e)
         {
-            if (Text_in.SelectionLength > 0)
+            if (Text_in.IsSelectionActive)
             {
                 Text_in.Copy();
             }
@@ -247,26 +259,26 @@ namespace CS_stu_Midterm_exam
         //編輯->刪除 功能
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            if (Text_in.SelectionLength > 0)
+            if (Text_in.IsSelectionActive)
             {
-                int start = Text_in.SelectionStart;
-                int end = start + Text_in.SelectionLength;
-                string index = Text_in.Text;
+                //int start = Text_in.SelectionStart;
+                //int end = start + Text_in.SelectionLength;
+                //string index = Text_in.Text;
 
-                Text_in.Text = index.Remove(start, end);
+                //Text_in.Text = index.Remove(start, end);
             }
         }
         //編輯->全選 功能
         private void Select_all_Click(object sender, RoutedEventArgs e)
         {
-            Text_in.Select(0, Text_in.Text.Length);
+            Text_in.SelectAll();
         }
         //編輯->時間/日期 功能
         private void add_time(object sender, RoutedEventArgs e)
         {
             DateTime localDate = DateTime.Now;
-            int test = Text_in.SelectionStart;
-            Text_in.Text = Text_in.Text.Insert(test, localDate.ToString());
+            //int test = Text_in.SelectionStart;
+            //Text_in.Text = Text_in.Text.Insert(test, localDate.ToString());
         }
 
         private void Auto_return_item_Click(object sender, RoutedEventArgs e)
@@ -274,12 +286,12 @@ namespace CS_stu_Midterm_exam
             if (Auto_return_item.IsChecked)
             {
                 Auto_return_item.IsChecked = false;
-                Text_in.TextWrapping = TextWrapping.NoWrap;
+                //Text_in.TextWrapping = TextWrapping.NoWrap;
             }
             else
             {
                 Auto_return_item.IsChecked = true;
-                Text_in.TextWrapping = TextWrapping.Wrap;
+                //Text_in.TextWrapping = TextWrapping.Wrap;
             }
 
         }
