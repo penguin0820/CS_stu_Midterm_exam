@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Media;
 using Application = System.Windows.Forms.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
@@ -15,12 +16,20 @@ namespace CS_stu_Midterm_exam
 {
     public partial class MainWindow : Window
     {
+        public bool main_Bold = false;
+        public bool main_Ltalic = false;
+        public bool main_Line = false;
+        public int size_in = 10;
+        public FontFamily main_FontFamily_put;
+
         string app_loc;
         int iWidth = new int();
         int iHeight = new int();
         bool is_Save=false;//如果有檔案
         bool need_seve = false;//有輸入過
         string Save_path="";//儲存點
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -274,5 +283,35 @@ namespace CS_stu_Midterm_exam
             }
 
         }
+
+        private void Form_Click(object sender, RoutedEventArgs e)
+        {
+            Window1 mywindow = new Window1(this);
+            mywindow.Show();
+        }
+
+        private void BGColor_Click(object sender, RoutedEventArgs e)
+        {
+            Color BG_color = GetDialog();
+            Brush currentsolidBush = new System.Windows.Media.SolidColorBrush(BG_color);
+            Text_in.Background = currentsolidBush;
+        }
+        private Color GetDialog()
+        {
+            ColorDialog colorDialog = new ColorDialog();
+            
+            colorDialog.ShowDialog();
+            System.Drawing.Color color_input = colorDialog.Color;
+            return Color.FromArgb(color_input.A, color_input.R, color_input.G, color_input.B);
+
+        }
+        public void forn_return(Window1 in_put)
+        {
+            main_Bold = in_put.Bold;
+            main_Ltalic = in_put.Ltalic;
+            main_Line = in_put.Line;
+            size_in = in_put.size_out;
+            main_FontFamily_put=in_put.FontFamily_put;
+    }
     }
 }

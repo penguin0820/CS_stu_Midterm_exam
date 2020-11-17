@@ -30,7 +30,8 @@
             </MenuItem>
             <MenuItem Header="格式">
                 <MenuItem x:Name="Auto_return_item" Header="自動換行" Height="16" IsChecked="True" Click="Auto_return_item_Click" />
-                <MenuItem Header="字形格式" Height="16"/>
+                <MenuItem x:Name="Form" Header="字形格式" Height="16" Click="Form_Click"/>
+                <MenuItem x:Name="BGColor" Header="頁面底色" Height="16" Click="BGColor_Click"/>
             </MenuItem>
             <MenuItem Header="檢視">
                 <MenuItem Header="縮放" Height="16">
