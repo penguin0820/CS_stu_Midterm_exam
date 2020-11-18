@@ -63,18 +63,11 @@ namespace CS_stu_Midterm_exam
             if (saveFileDialog.ShowDialog() == true)
             {
                 string path = saveFileDialog.FileName;
-                MemoryStream ms = new MemoryStream();
+                FileStream ms = new FileStream(path, FileMode.Create);
                 TextRange range = new TextRange(Text_in.Document.ContentStart, Text_in.Document.ContentEnd);
                 range.Save(ms, DataFormats.Rtf);
-                string content = Encoding.Default.GetString(ms.GetBuffer());
-                content = content.Replace(@"fcharset0", @"fcharset134");
-                using (FileStream fs = new FileStream(path, FileMode.Create))
-                {
-                    using (StreamWriter wr = new StreamWriter(fs,en))
-                    {
-                        wr.Write(content);
-                    }
-                }
+                ms.Close();
+
                 Save_path = path;
                 is_Save = true;
                 window.Title = saveFileDialog.SafeFileName + " - 記事本";
@@ -102,7 +95,8 @@ namespace CS_stu_Midterm_exam
                     case MessageBoxResult.No:
                         is_Save = false;
                         Save_path = "";
-                        //Text_in.Text = "";
+                        TextRange range = new TextRange(Text_in.Document.ContentStart, Text_in.Document.ContentEnd);
+                        range.Text = "";
                         window.Title = "未命名 - 記事本";
                         need_seve = false;
                         break;
@@ -261,6 +255,9 @@ namespace CS_stu_Midterm_exam
         {
             if (Text_in.IsSelectionActive)
             {
+                TextRange range = new TextRange(Text_in.Document.ContentStart, Text_in.Document.ContentEnd);
+                range.Text = "";
+                
                 //int start = Text_in.SelectionStart;
                 //int end = start + Text_in.SelectionLength;
                 //string index = Text_in.Text;
@@ -324,6 +321,11 @@ namespace CS_stu_Midterm_exam
             main_Line = in_put.Line;
             size_in = in_put.size_out;
             main_FontFamily_put=in_put.FontFamily_put;
-    }
+        }
+
+        private void Redo_Click(object sender, RoutedEventArgs e)
+        {
+            Text_in.Redo();
+        }
     }
 }

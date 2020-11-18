@@ -19,6 +19,7 @@
             </MenuItem>
             <MenuItem Header="編輯" MouseEnter="Edit_Item_Refresh">
                 <MenuItem x:Name="undo_item" Header="復原" Height="16" Click="Undo_Click"/>
+                <MenuItem x:Name="redo_item" Header="重作" Height="16" Click="Redo_Click"/>
                 <Separator Height="1" Margin="0,0,0,0"/>
                 <MenuItem x:Name="Cut_item" Header="剪下" Height="16" Click="cut_Click" />
                 <MenuItem x:Name="Copy_item" Header="複製" Height="16" Click="copy_Click" />
@@ -27,6 +28,7 @@
                 <Separator Height="1" Margin="0,0,0,0"/>
                 <MenuItem Header="全選" Height="16" Click="Select_all_Click"/>
                 <MenuItem Header="時間/日期" Height="16" Click="add_time"/>
+                
             </MenuItem>
             <MenuItem Header="格式">
                 <MenuItem x:Name="Auto_return_item" Header="自動換行" Height="16" IsChecked="True" Click="Auto_return_item_Click" />
