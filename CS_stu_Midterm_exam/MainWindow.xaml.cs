@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Windows.Media;
 using Application = System.Windows.Forms.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -28,7 +29,7 @@ namespace CS_stu_Midterm_exam
         bool is_Save=false;//如果有檔案
         bool need_seve = false;//有輸入過
         string Save_path="";//儲存點
-
+        int fun = 0;
 
         public MainWindow()
         {
@@ -44,7 +45,7 @@ namespace CS_stu_Midterm_exam
             if (Width == 0 || Height == 0) return;
             iWidth = (int)this.Width;
             iHeight = (int)this.Height;
-            Text_in.Height = iHeight - 75;
+            Text_in.Height = iHeight - 85;
             Text_in.Width = iWidth - 15;
         }
         //說明->傳送意見反應
@@ -55,6 +56,7 @@ namespace CS_stu_Midterm_exam
         //儲存檔案內容
         private void Save_file()
         {
+            Doing.Content = "存檔中....";
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.DefaultExt = "*.txt";
             saveFileDialog.Filter = "Text file|*.txt|All file|*.*";
@@ -70,6 +72,8 @@ namespace CS_stu_Midterm_exam
                 window.Title = saveFileDialog.SafeFileName + " - 記事本";
                 need_seve = false;
             }
+            
+            Doing.Content = "就緒....";
         }
         //開新檔案內容
         public void ExitApp()
@@ -104,13 +108,21 @@ namespace CS_stu_Midterm_exam
         //如果使用者有輸入過
         private void Text_in_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            
-            if (need_seve == false)
-            {
-                string title = window.Title;
-                window.Title = "* " + title;
-            }
+                fun += 1;
+                string out_pur_lab = "輸入中";
+                for (int i = 0; i < fun / 2; i++)
+                {
+                    out_pur_lab += ".";
+                    if (fun > 10)
+                    {
+                        fun = 0;
+                    }
+                }
+                Doing.Content = out_pur_lab;
+                cun.Content = "總共輸入了" + (Text_in.Text.Length + 1).ToString() + "個字";
             need_seve = true;
+            
+            
         }
         //編輯menu刷新
         private void Edit_Item_Refresh(object sender, System.Windows.Input.MouseEventArgs e)
@@ -157,6 +169,7 @@ namespace CS_stu_Midterm_exam
         //檔案->開啟舊檔 功能
         private void Loading_Click(object sender, RoutedEventArgs e)
         {
+            Doing.Content = "開啟舊檔....";
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             OpenFileDialog openfile = new OpenFileDialog();
             openfile.DefaultExt = ".txt";
@@ -172,7 +185,8 @@ namespace CS_stu_Midterm_exam
                 is_Save = true;
                 window.Title = openfile.SafeFileName + " - 記事本";
             }
-
+            Doing.Content = "就緒....";
+            
         }
         //檔案->儲存檔案 按鈕
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -312,6 +326,50 @@ namespace CS_stu_Midterm_exam
             main_Line = in_put.Line;
             size_in = in_put.size_out;
             main_FontFamily_put=in_put.FontFamily_put;
-    }
+            Text_in.FontFamily = main_FontFamily_put;
+            Text_in.FontSize = size_in;
+            if (main_Ltalic)
+            {
+                Text_in.FontStyle = FontStyles.Italic;
+            }
+            else
+            {
+                Text_in.FontStyle = FontStyles.Normal;
+            }
+            if (main_Bold)
+            {
+                Text_in.FontWeight = FontWeights.Bold;
+            }
+            else
+            {
+                Text_in.FontWeight = FontWeights.Normal;
+            }
+            if (main_Line)
+            {
+                Text_in.TextDecorations = TextDecorations.Underline;
+            }
+            else
+            {
+                Text_in.TextDecorations = null;
+            }
+        }
+
+        private void redo_Click(object sender, RoutedEventArgs e)
+        {
+            Text_in.Redo();
+        }
+        private void window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+        }
+        int i = 0;
+        private void Text_in_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            cun.Content = "總共輸入了" + (Text_in.Text.Length).ToString() + "個字";
+            if (Text_in.Text.Length < i)
+            {
+               Doing.Content = "刪除中";
+            }
+            i = Text_in.Text.Length;
+        }
     }
 }

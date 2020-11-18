@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS_stu_Midterm_exam"
         mc:Ignorable="d"
-        Title="未命名 - 記事本" Height="450" Width="800" SizeChanged="window_SizeChanged">
+        Title="未命名 - 記事本" Height="455.333" Width="800" SizeChanged="window_SizeChanged" KeyDown="window_KeyDown">
     <StackPanel x:Name="Stack" Background="Black">
         <Menu Height="19">
             <MenuItem Header="檔案">
@@ -19,6 +19,7 @@
             </MenuItem>
             <MenuItem Header="編輯" MouseEnter="Edit_Item_Refresh">
                 <MenuItem x:Name="undo_item" Header="復原" Height="16" Click="Undo_Click"/>
+                <MenuItem x:Name="redo_item" Header="重做" Height="16" Click="redo_Click"/>
                 <Separator Height="1" Margin="0,0,0,0"/>
                 <MenuItem x:Name="Cut_item" Header="剪下" Height="16" Click="cut_Click" />
                 <MenuItem x:Name="Copy_item" Header="複製" Height="16" Click="copy_Click" />
@@ -27,6 +28,7 @@
                 <Separator Height="1" Margin="0,0,0,0"/>
                 <MenuItem Header="全選" Height="16" Click="Select_all_Click"/>
                 <MenuItem Header="時間/日期" Height="16" Click="add_time"/>
+
             </MenuItem>
             <MenuItem Header="格式">
                 <MenuItem x:Name="Auto_return_item" Header="自動換行" Height="16" IsChecked="True" Click="Auto_return_item_Click" />
@@ -48,8 +50,23 @@
                 <MenuItem Header="關於記事本" Height="16"/>
             </MenuItem>
         </Menu>
-        <TextBox x:Name="Text_in" Background="#FFB9B9B9" Height="375" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" FontSize="18" KeyDown="Text_in_KeyDown" />
+        <TextBox x:Name="Text_in" Background="#FFB9B9B9" Height="362" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" FontSize="18" KeyDown="Text_in_KeyDown" TextChanged="Text_in_TextChanged" />
 
-        <StatusBar Margin="0,0,0,0" Height="31" Background="#FFCB6E6E"/>
+        <StatusBar Margin="0,0,0,0" Height="42" Background="#FFEAB3B3">
+            <Label x:Name="Doing" Content="Label" Width="126" Height="32"/>
+            <Separator Height="42" Margin="0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="2">
+                <Separator.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Separator.RenderTransform>
+            </Separator>
+            <Label x:Name="cun" Content="Label" Height="32" Width="116"/>
+            <Separator Height="48" Margin="0,0,0,-6" VerticalAlignment="Top" Width="3"/>
+            <Label Content="Label" Width="106" Height="32"/>
+        </StatusBar>
     </StackPanel>
 </Window>
